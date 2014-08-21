@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>D3: Empty page template</title>
+		<script type="text/javascript" src="d3.v3.js"></script>
+		<style>
+		  circle.cell-hover {
+		  stroke: #F00;
+		  stroke-width:0.3px
+		  }
+		  #tooltip {
+		  position: absolute;
+		  width: 200px;
+		  height: 200px;
+		  padding: 10px;
+		  background-color: white;
+		  -webkit-border-radius: 10px;
+		  -moz-border-radius: 10px;
+		  border-radius: 10px;
+		  -webkit-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+		  -moz-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+		  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+		  pointer-events: none;
+		  }
+		  #tooltipe.hidden {
+		  display: none;
+		  }
+		  #tooltip p {
+		  margin: 0;
+		  font-family: sans-serif;
+		  font-size: 12px;
+		  line-height: 20px;
+		  }
+		</style>
+	</head>
+	<body>
+	  <div id="viz"></div>
+	  <div id="tooltip" class="hidden">
+	    <p><span id="value"></p>
+	  </div>
+		<script type="text/javascript">
+			// Your beautiful D3 code will go here
+			d3.xml("circos.svg","image/svg+xml",function(xml) {
+			var importedNode = document.importNode(xml.documentElement, true);
+			d3.select("#viz").node().appendChild(importedNode);
+			var circles = d3.selectAll("circle");
+			circles.style("stroke","green");
+
+
+			circles.on("mouseover",function(d, i){
+			var thecirc = d3.select(this)
+
+               //highlight text
+               d3.select(this).classed("cell-hover",true);
+
+        
+               //Update the tooltip position and value
+               d3.select("#tooltip")
+                 .style("left", (d3.event.pageX+10) + "px")
+                 .style("top", (d3.event.pageY-10) + "px")
+                 .select("#value")
+                 .text("lables: cx="+thecirc.attr("cx")+", cy="+thecirc.attr("cy"));  
+               //Show the tooltip
+               d3.select("#tooltip").classed("hidden", false);
+        })
+        .on("mouseout", function(){
+               d3.select(this).classed("cell-hover",false);
+               d3.select("#tooltip").classed("hidden", true);
+        });
+
+
+})
+
+
+
+
+<!-- This section is devoted to the mouseover feature -->
+                        
+		</script>
+	</body>
+</html>
