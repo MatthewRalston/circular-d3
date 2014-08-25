@@ -46,11 +46,21 @@
 			var circles = d3.selectAll("circle");
 			circles.style("stroke","green");
 
-
+			// ON MOUSEOVER
 			circles.on("mouseover",function(d){
 			var circ = d3.select(this)
+			var w = 500
+			var h = 100
+			// Make the 'dataset' consist of attributes from the circle
+			var dataset = [circ.attr("cx"),circ.attr("cy")]
+/*
+			var xScale = d3.scale.linear()
+					     .domain([0,d3.max(dataset,function(d) {return d;})])
+					     .range([0,w]);
+*/
+			var rScale = d3.scale.linear().domain([0,d3.max(dataset,function(d) {return d;})]).range([2,5]);
 
-               //highlight text
+               //highlight the circle
                d3.select(this).classed("cell-hover",true);
 	       circ.style("stroke", "red").attr("r","8.0").style("fill","red");
         
@@ -58,14 +68,30 @@
                d3.select("#tooltip")
                  .style("left", (d3.event.pageX+10) + "px")
                  .style("top", (d3.event.pageY-10) + "px")
+		 .style("width","750px")
+		 .style("height","300px")
                  .select("#value")
-                 .text("labels: cx="+circ.attr("cx")+", cy="+circ.attr("cy"));  
+                 .text("labels: cx="+circ.attr("cx")+", cy="+circ.attr("cy"));
+	       // Draw an svg for graphing, to which other elements can be added
+	       var minisvg = d3.select("#tooltip").append("svg:svg")
+		 .attr("width", w)
+		 .attr("height", h);
+	       // Make circles, bind the data
+	       var minicircles = minisvg.selectAll("circle")
+		 .data(dataset)
+		 .enter()
+		 .append("circle");
+	       // Make the circles properties reflect the data
+	       minicircles.attr("cx",function(d,i) { return (i * 50) + 25;})
+		       .attr("cy",25)
+		       .attr("r",function(d) {return rScale(d);});
                //Show the tooltip
                d3.select("#tooltip").classed("hidden", false);
         })
         .on("mouseout", function(d){
 	       var circ = d3.select(this)
                d3.select("#tooltip").classed("hidden", true);
+	       d3.select("#tooltip").select("svg").remove();
 	       circ.transition().style("stroke","green").attr("r","1.0").style("fill","green");
         });
 
