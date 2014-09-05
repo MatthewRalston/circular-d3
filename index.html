@@ -45,12 +45,15 @@
 			d3.select("#viz").node().appendChild(importedNode);
 			var heatmaps = d3.selectAll("path");
 			//heatmaps.style("stroke","green");
-
+			var stroke
+			var fill
 			// ON MOUSEOVER
 			heatmaps.on("mouseover",function(d){
 			var item = d3.select(this)
 			var w = 500
 			var h = 100
+			stroke = item.style("stroke")
+			fill = item.style("fill")
 			// Make the 'dataset' consist of attributes from the circle
 			var dataset = [item.attr("id"),item.attr("val")]
 /*
@@ -61,7 +64,7 @@
 			//var rScale = d3.scale.linear().domain([0,d3.max(dataset,function(d) {return d;})]).range([2,5]);
 
                //highlight the circle
-               d3.select(this).classed("cell-hover",true);
+               item.classed("cell-hover",true);
 	       item.style("stroke", "red").attr("r","8.0").style("fill","red");
         
                //Update the tooltip position and value
@@ -71,7 +74,7 @@
 		 .style("width","750px")
 		 .style("height","300px")
                  .select("#value")
-                 .text("labels: Gene ID = "+item.attr("id")+", Log2 fold change = "+item.attr("val"));
+                 .html("labels: Gene ID = "+item.attr("id")+"<br/>Comparison = "+item.attr("cond")+"<br/>Log2 fold change = "+item.attr("val")+"<br/>P-value = "+item.attr("pval")+"<br/>Time = "+item.attr("time"));
 	       // Draw an svg for graphing, to which other elements can be added
 	       var minisvg = d3.select("#tooltip").append("svg")
 		 .attr("width", w)
@@ -89,10 +92,10 @@
                d3.select("#tooltip").classed("hidden", false);
         })
         .on("mouseout", function(d){
-	       var heatmap = d3.select(this)
+	       var item = d3.select(this)
                d3.select("#tooltip").classed("hidden", true);
 	       d3.select("#tooltip").select("svg").remove();
-	       heatmap.transition().style("stroke","green").attr("r","1.0").style("fill","green");
+	       item.transition().style("stroke",stroke).style("fill",fill);
         });
 
 
