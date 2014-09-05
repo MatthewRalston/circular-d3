@@ -44,7 +44,7 @@
 			var importedNode = document.importNode(xml.documentElement, true);
 			d3.select("#viz").node().appendChild(importedNode);
 			var heatmaps = d3.selectAll("path");
-			heatmaps.style("stroke","green");
+			//heatmaps.style("stroke","green");
 
 			// ON MOUSEOVER
 			heatmaps.on("mouseover",function(d){
