@@ -41,6 +41,10 @@
 		</style>
 	</head>
 	<body>
+	  <div id="Description">
+	    <p><strong>Interactive visualization of RNA-seq data</strong></p>
+	    <p>This visualization describes RNA sequencing data from my experiment. Bacterial cultures were stressed with butanol and butyrate during mid-exponential growth. Samples were collected at four time points.
+	  </div>
 	  <div id="viz"></div>
 	  <div id="tooltip" class="hidden">
 	    <p><strong>Selected point</strong></p>
@@ -48,7 +52,8 @@
 	  </div>
 		<script type="text/javascript">
 			// Your beautiful D3 code will go here
-			d3.xml("circos.svg","image/svg+xml",function(error,xml) {
+			//d3.xml("https://www.dropbox.com/s/em3hxntuuojqfoc/circos.svg?dl=1","image/svg+xml",function(error,xml) {
+		        d3.xml("circos.svg",function(error,xml) {
 			if (error) {console.log(error)} // Log errors
 
 			var importedNode = document.importNode(xml.documentElement, true);
