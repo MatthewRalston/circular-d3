@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
-		<title>D3: Empty page template</title>
+		<title>Circos plot- by Matt Ralston</title>
 		<script type="text/javascript" src="d3/d3.v3.js"></script>
 		<style type="text/css">
 		  #tooltip {
@@ -28,12 +28,21 @@
 		  font-size: 16px;
 		  line-height: 20px;
 		  }
+		  path {
+		   fill-opacity: .9;
+		  }
+		  path.hidden {
+		   fill: #ccc !important;
+		   fill-opacity: .1;
+		   stroke: #fff;
+		   display: none;
+		  }
 		</style>
 	</head>
 	<body>
 	  <div id="viz"></div>
 	  <div id="tooltip" class="hidden">
-	    <p><strong>Important Label Heading</strong></p>
+	    <p><strong>Selected point</strong></p>
 	    <p><span id="value"></span></p>
 	  </div>
 		<script type="text/javascript">
@@ -43,11 +52,102 @@
 
 			var importedNode = document.importNode(xml.documentElement, true);
 			d3.select("#viz").node().appendChild(importedNode);
-			var heatmaps = d3.selectAll("path");
-			//heatmaps.style("stroke","green");
+			var heatmaps = d3.selectAll(".heatmaps");
+			var links = d3.selectAll(".links");
+			var genes = d3.selectAll(".genelabels");
+			var histograms = d3.selectAll(".histograms");
+			// refers to or point
 			var stroke
 			var fill
-			// ON MOUSEOVER
+			var genefill
+			var genesize
+			// M O U S E - O V E R 
+			// Heatmaps
+			heatmaps.selectAll("path").on("mouseover", function(d){heatin(d3.select(this))}).on("mouseout",function(d){ heatout(d3.select(this))})
+
+			histograms.selectAll("circle").on("mouseover", function(d) {histin(d3.select(this))}).on("mouseout", function(d){histout(d3.select(this))})
+			links.selectAll("path").on("mouseover",function(d) { var link=d3.select(this); if (!link.empty()) {linkin(link)}}).on("mouseout",function(d){ var link=d3.select(this);if (!link.empty()) {linkout(link)} })
+
+
+			// M O U S E - F U N C T I O N S
+			function linkin(link) {
+			  var gene = d3.selectAll(".genelabels").select("text#"+link.attr("id"));
+			  var cluster = link.attr("class");
+			  links.selectAll("path").classed("hidden",true);
+			  links.selectAll("."+cluster.split(" ")[0]).classed("hidden",false);
+			  d3.select("#tooltip")
+			  .style("left",(d3.event.pageX+10)+"px")
+			  .style("top",(d3.event.pageY-10)+"px")
+			  .style("width","750px").style("height","300px")
+			  .select("#value")
+			  .html("Labels: Gene ID = "+link.attr("id")+"<br/>Cluster = "+cluster);
+			  d3.select("#tooltip").classed("hidden",false);
+			  // overtime(d)
+			}
+			function histin(circle) {
+			stroke = circle.style("stroke");
+			fill = circle.style("fill");
+			circle.classed("cell-hover",true);
+			circle.style("stroke","red").attr("r","2.5").style("fill","red");
+			d3.select("#tooltip")
+			  .style("left",(d3.event.pageX+10) + "px")
+			  .style("top",(d3.event.pageY-10) + "px")
+			  .style("width","200px").style("height","300px")
+			  .select("#value")
+			  .html("labels: Coordinates = "+circle.attr("coord")+"<br/>Coverage = "+circle.attr("exp"));
+			d3.select("#tooltip").classed("hidden",false);
+			}
+			function heatin(tile) {
+			var link = d3.selectAll(".links").select("path#"+tile.attr("id"));
+			var gene = d3.selectAll(".genelabels").select("text#"+tile.attr("id"));
+			//console.log(link[0]);
+			var cluster = (link.empty()) ? "NA" : link.attr("class");
+			var w = 500;
+			var h = 100;
+			stroke = tile.style("stroke");
+			fill = tile.style("fill");
+			if (!gene.empty()) {
+			  genefill = gene.attr("fill");
+			  genesize = gene.attr("font-size");
+			  gene.style("fill","red").attr("font-size","9.0px")
+			}
+			tile.classed("cell-hover",true);
+			tile.style("stroke","red").attr("r","8.0").style("fill","red");
+
+			d3.select("#tooltip")
+			  .style("left", (d3.event.pageX+10) + "px")
+			  .style("top", (d3.event.pageY-10) + "px")
+			  .style("width","750px").style("height","300px")
+			  .select("#value")
+			  .html("labels: Gene ID = "+tile.attr("id")+"<br/>Comparison = "+tile.attr("cond")+"<br/>Log2 fold change = "+tile.attr("val")+"<br/>P-value = "+tile.attr("pval")+"<br/>Time = "+tile.attr("time")+"<br/>Cluster = "+cluster);
+			d3.select("#tooltip").classed("hidden", false);
+			// use .hidden class as in http://goo.gl/7Cx2ch
+			// to make all links except those of interest hidden
+			if (!link.empty()) {
+			  d3.selectAll(".links path").classed("hidden",true);
+			  d3.selectAll(".links").selectAll("."+link.attr("class").split(" ")[0]).classed("hidden",false);
+			}
+			// overtime(d)
+			}
+			function heatout(tile) {
+			  var gene = d3.selectAll(".genelabels").select("text#"+tile.attr("id"));
+			  d3.select("#tooltip").classed("hidden", true);
+			  d3.select("#tooltip").select("svg").remove();
+			  links.selectAll("path").classed("hidden",false);
+			  gene.style("fill",genefill).attr("font-size",genesize);
+			  
+			  tile.transition().style("stroke",stroke).style("fill",fill);
+			}
+			function histout(circle) {
+			d3.select("#tooltip").classed("hidden",true);
+			circle.transition().style("stroke",stroke).style("fill",fill);
+			}
+			function linkout(link) {
+			  d3.select("#tooltip").classed("hidden",true);
+			  d3.select("#tooltip").select("svg").remove();
+			  links.selectAll("path").classed("hidden",false);
+			}
+/*
 			heatmaps.on("mouseover",function(d){
 			var item = d3.select(this)
 			var w = 500
@@ -56,25 +156,19 @@
 			fill = item.style("fill")
 			// Make the 'dataset' consist of attributes from the circle
 			var dataset = [item.attr("id"),item.attr("val")]
-/*
 			var xScale = d3.scale.linear()
 					     .domain([0,d3.max(dataset,function(d) {return d;})])
 					     .range([0,w]);
 */
-			//var rScale = d3.scale.linear().domain([0,d3.max(dataset,function(d) {return d;})]).range([2,5]);
 
+			//var rScale = d3.scale.linear().domain([0,d3.max(dataset,function(d) {return d;})]).range([2,5]);
+/*
                //highlight the circle
                item.classed("cell-hover",true);
 	       item.style("stroke", "red").attr("r","8.0").style("fill","red");
-        
+      
                //Update the tooltip position and value
-               d3.select("#tooltip")
-                 .style("left", (d3.event.pageX+10) + "px")
-                 .style("top", (d3.event.pageY-10) + "px")
-		 .style("width","750px")
-		 .style("height","300px")
-                 .select("#value")
-                 .html("labels: Gene ID = "+item.attr("id")+"<br/>Comparison = "+item.attr("cond")+"<br/>Log2 fold change = "+item.attr("val")+"<br/>P-value = "+item.attr("pval")+"<br/>Time = "+item.attr("time"));
+               
 	       // Draw an svg for graphing, to which other elements can be added
 	       var minisvg = d3.select("#tooltip").append("svg")
 		 .attr("width", w)
@@ -96,7 +190,8 @@
                d3.select("#tooltip").classed("hidden", true);
 	       d3.select("#tooltip").select("svg").remove();
 	       item.transition().style("stroke",stroke).style("fill",fill);
-        });
+*/
+//        });
 
 
 })
