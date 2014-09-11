@@ -47,7 +47,8 @@
 	  </div>
 		<script type="text/javascript">
 			// Your beautiful D3 code will go here
-			d3.xml("circos.svg","image/svg+xml",function(error,xml) {
+			//d3.xml("https://www.dropbox.com/s/em3hxntuuojqfoc/circos.svg?dl=1","image/svg+xml",function(error,xml) {
+		        d3.xml("circos.svg",function(error,xml) {
 			if (error) {console.log(error)} // Log errors
 
 			var importedNode = document.importNode(xml.documentElement, true);
