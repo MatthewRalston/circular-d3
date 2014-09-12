@@ -1,0 +1,175 @@
+.orbiter {
+  border: 1px solid black;
+}
+
+.description {
+  padding-left: 15px;
+}
+
+#time-scale {
+  top: 295px;
+  left: 145px;
+  width: 122px;
+  height: 180px;
+  padding-left: 5px;
+  float: right;
+  border: 1px solid #222;
+}
+
+
+
+#time-colors, #time-values {
+  float: left;
+  margin-left: 5px
+}
+
+#time-colors {
+  stroke: #333;
+  stroke-width: .5px;
+  margin-top: 7px
+}
+
+#time-values {
+  width: 80px;
+  overflow: hidden;
+}
+
+#time-values textarea {
+  margin: 0;
+  background-color: #FFFFFF;
+  border: none;
+  resize: none;
+  height: 100%;
+  width: 50px;
+  font: 13px 'Comic Sans', sans-serif;
+}
+
+#time-description {
+  float: left;
+  width: 465px;
+}
+
+
+
+
+
+#coverage-colors, #coverage-values {
+  float: left;
+  margin-left: 5px 
+}
+
+#coverage-scale {
+  top: 295px;
+  left: 145px;
+  width: 160px;
+  height: 100px
+  padding-left: 5px;
+  float: right;
+  border: 1px solid #000;
+}
+
+#coverage-colors {
+  margin-top: 7px;
+  stroke: #333;
+  stroke-width: .5px;
+}
+
+#coverage-values {
+  width: 95px;
+  overflow: hidden;
+  float: right;
+
+}
+
+#coverage-values textarea {
+  margin: 0;
+  background-color: #FFFFFF;
+  border: none;
+  resize: none;
+  height: 100%;
+  width: 125px;
+  font: 13px 'Comic Sans', sans-serif;
+}
+
+#coverage-description {
+  float: left;
+  width: 420px;
+}
+
+#density-description {
+  width: 300px;
+  float: left;
+  margin-left: 5px;
+}
+
+#hist-rug {
+  width: 200px;
+  height: 200px;
+  float: right;
+}
+
+
+#stress-scale {
+  top: 295px;
+  left: 180px;
+  width: 122px;
+  height: 180px;
+  padding-left: 5px;
+  float: right;
+  border: 1px solid #222;
+}
+
+
+
+#butanol-colors, #butyrate-colors, #stress-values {
+  float: left;
+  margin-left: 5px
+  
+}
+
+#butanol-colors {
+  margin-top: 7px;
+  stroke: #333;
+  stroke-width: .5px;
+}
+
+#butyrate-colors {
+  margin-top: 7px;
+  stroke: #333;
+  stroke-width: .5px;
+}
+
+#stress-values {
+  width: 50px;
+  overflow: hidden;
+  float: right;
+}
+
+#stress-values textarea {
+  margin: 0;
+  background-color: #FFFFFF;
+  border: none;
+  resize: none;
+  height: 100%;
+  width: 50px;
+  font: 13px 'Comic Sans', sans-serif;
+}
+
+#stress-description {
+  float: left;
+  width: 420px;
+}
+
+#gene-description {
+  margin-top: 5px;
+}
+
+#cluster-description {
+  margin-top:5px;
+}
+
+#acknowledgements {
+  width: 500px;
+  float: left;
+  margin-left: 20px;
+}

@@ -2,9 +2,12 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 		<title>Circos plot- by Matt Ralston</title>
-		<script type="text/javascript" src="d3/d3.v3.js"></script>
+		<script type="text/javascript" src="js/d3.v3.js"></script>
+		<script type="text/javascript" scr="js/modernizr.js"></script>
 		<link rel="stylesheet" href="css/foundation.css"/>
+		<link rel="stylesheet" href="css/custom.css">
 		<style type="text/css">
 		  #tooltip {
 		  position: absolute;
@@ -41,10 +44,153 @@
 		</style>
 	</head>
 	<body>
-	  <div id="Description">
-	    <p><strong>Interactive visualization of RNA-seq data</strong></p>
-	    <p>This visualization describes RNA sequencing data from my experiment. Bacterial cultures were stressed with butanol and butyrate during mid-exponential growth. Samples were collected at four time points.
+
+	  <nav class="top-bar" data-topbar>
+	    <ul class="title-area">
+	      <li class="name">
+		<h1>
+		  <a href="https://matthewralston.github.io">Matthew Ralston</a>
+		</h1>
+	      </li>
+	      <li class="toggle-topbar menu-icon"><a href="#"><span>menu</span></a></li>
+	    </ul>
+	    <section class="top-bar-section">
+	      <ul class="right">
+	      <li class="divider"></li>
+	      <li><a href="http://matthewralston.github.io">Home</a></li>
+	      <li class="divider"></li>
+
+	    </ul>
+	    </section>
+	  </nav>
+
+
+	  <div id="site-description" class="large-8 small-4 columns">
+	    <h2>Interactive Visualization of RNA-seq Data</h2>
+	    <p><br/></p><em>Please enable javascript and be patient for the database to load (~30s @3Mb/s).</em><br/><br/>This visualization describes RNA sequencing data from my experiment. Bacterial cultures were stressed with butanol and butyrate during mid-exponential growth. Samples were collected at four time points. Coverage, differential expression data, and gene clustering data are visualized in 'tracks' on the circular graph below.</p>
 	  </div>
+	    <div id="orbiter" class="large-8 small-4 columns">
+	      <ul class="example-orbit" data-orbit>
+		<li class="orbiter">
+		  <div id="density-description" class="description"><p><br/>The purple track around the chromosome shows gene density.</p></div>
+		  <img id="hist-rug" src="http://www.ats.ucla.edu/stat/r/pages/introduction_fig/unnamed-chunk-8.png" alt="Track 1: Gene density"/>
+		  <br/><br/><br/><br/><br/><br/><br/><br/><br/>
+		  <div class="orbit-caption">Gene density</div>
+		</li>
+		<li class="orbiter">
+		  <div id="time-description" class="description">
+		    <p><br/>The second track is a group of heatmaps, showing differential expression over time, with respect to the first mid-exponential time-point. Log<sub>2</sub> fold changes are visualized as heatmaps with the scale to the right. Individual data points can be inspected by hovering over a tile of interest.</p>
+		  </div>
+		  <div id="time-scale">
+		    <p style="font-size: 10pt; margin-bottom: 0px;">Log<sub>2</sub> fold change</p>
+		    <div id="time-colors">
+		      <svg width="24" height="150">
+			<rect fill="#2166ac" width="24" height="24" y="0"></rect>
+			<rect fill="#67a9cf" width="24" height="24" y="24"></rect>
+			<rect fill="#d1e5f0" width="24" height="24" y="48"></rect>
+			<rect fill="#fddbc7" width="24" height="24" y="72"></rect>
+			<rect fill="#ef8a62" width="24" height="24" y="96"></rect>
+			<rect fill="#b2182b" width="24" height="24" y="120"></rect>
+		      </svg>
+		    </div>
+		    <div id="time-values">
+		      <textarea readonly="" style="line-height:24px; height:150px"> 3
+ 2
+ 1
+-1
+-2
+-3</textarea>
+		    </div>
+		  </div>
+		  <br/><br/><br/><br/><br/><br/><br/><br/><br/>
+		  <div class="orbit-caption">Differential Expression: T<sub>i</sub> vs T<sub>1</sub></div>
+		</li>
+		<li class="orbiter">
+		  <div id="coverage-description" class="description">
+		    <p><br/>The third group of tracks shows the Log<sub>10</sub> of coverage across the genome, color scale shown on the right.</p>
+		  </div>
+		  <div id="coverage-scale">
+		    <p style="font-size: 10pt; margin-bottom: 0px; margin-left: 5px;">Coverage</p>
+		    <div id="coverage-colors">
+		      <svg width="24" height="100">
+			<rect fill="rgb(65,171,93)" width="24" height="24" y="0"></rect>
+			<rect fill="rgb(116,196,118)" width="24" height="24" y="24"></rect>
+			<rect fill="rgb(150,150,150)" width="24" height="24" y="48"></rect>
+			<rect fill="rgb(255,106,74)" width="24" height="24" y="72"></rect>
+		      </svg>
+		    </div>
+		    <div id="coverage-values">
+		      <textarea readonly="" style="line-height:24px; height:100px">> 50 counts
+10-50 counts
+5-10 counts
+< 5 counts</textarea>
+		    </div>
+		  </div>
+		  <br/><br/><br/><br/><br/><br/><br/><br/><br/>
+		  <div class="orbit-caption">Sequencing Depth</div>
+		</li>
+		<li class="orbiter">
+		  <div id="stress-description" class="description">
+		    <p><br/>The fourth group of tracks shows differential expression of generally stress responsive genes. The outermost heatmaps (left scale) show genes that respond to butanol. The inntermost heatmaps (right scale) show genes that respond to butyrate. Individual points may be inspected by hovering over a tile of interest.</p>
+		  </div>
+		  <div id="stress-scale">
+		    <p style="font-size: 10pt; margin-bottom: 0px;">Log<sub>2</sub> fold change</p>
+		    <div id="butanol-colors">
+		      <svg width="24" height="170">
+			<rect fill="#4d9221" width="24" height="24" y="0"></rect>
+			<rect fill="#a1d76a" width="24" height="24" y="24"></rect>
+			<rect fill="#e6f5d0" width="24" height="24" y="48"></rect>
+			<rect fill="#fde0ef" width="24" height="24" y="72"></rect>
+			<rect fill="#e9a3c9" width="24" height="24" y="96"></rect>
+			<rect fill="#c51b7d" width="24" height="24" y="120"></rect>
+		      </svg>
+		    </div>
+		    <div id="butyrate-colors">
+		      <svg width="24" height="170">
+			<rect fill="#2166ac" width="24" height="24" y="0"></rect>
+			<rect fill="#67a9cf" width="24" height="24" y="24"></rect>
+			<rect fill="#d1e5f0" width="24" height="24" y="48"></rect>
+			<rect fill="#fddbc7" width="24" height="24" y="72"></rect>
+			<rect fill="#ef8a62" width="24" height="24" y="96"></rect>
+			<rect fill="#b2182b" width="24" height="24" y="120"></rect>
+		      </svg>
+		    </div>
+		    <div id="stress-values">
+		      <textarea readonly="" style="line-height:24px; height:150px"> 3
+ 2
+ 1
+-1
+-2
+-3</textarea>
+		    </div>
+		  </div>
+		  <br/><br/><br/><br/><br/><br/><br/><br/><br/>
+		  <div class="orbit-caption">Differential Expression: Stressed vs Control over time</div>
+		</li>
+		<li class="orbiter">
+		  <div id="gene-description" class="description">
+		    <p><br/>The next track shows gene names produced from differential expression analysis. The gene names are stacked next to each other for space saving purposes.</p>
+		  </div>
+		  <br/><br/><br/><br/><br/>
+		  <div class="orbit-caption">Gene Labels</div>
+		</li>
+		<li class="orbiter">
+		  <div id="cluster-description" class="description">
+		    <p><br/>The final track shows the relationships between genes based on co-expression clustering. In this graph I display results from K-means clustering. K-means was chosen for its simplicity and ability to generate a low number of singleton clusters.</p>
+		  </div>
+		  <br/><br/><br/><br/>
+		  <div class="orbit-caption">Gene Expression Clustering</div>
+		</li>
+	      </ul>
+
+	      <script src="./js//jquery.js"></script>
+	      <script src="./js/foundation.min.js"></script>
+	      <script>
+	       $(document).foundation();
+	      </script>
+	    </div>
+
+	  
 	  <div id="viz"></div>
 	  <div id="tooltip" class="hidden">
 	    <p><strong>Selected point</strong></p>
@@ -206,7 +352,12 @@
 
 
 <!-- This section is devoted to the mouseover feature -->
-                        
+                  
 		</script>
+		<div id="acknowledgements">
+		  <p>Special thanks to the Papoutsakis lab for supporting this work, to the staff of the Delaware Biotechnology Institute for the computational resources, to Martin Krzywinski for his development of Circos, and for Mike Bostock for D3.</p>
+		  <div align='center'><a href='http://www.hit-counts.com'><img src='http://www.hit-counts.com/counter.php?t=MTMzMTEzMA==' border='0' alt='Visitor Counter'></a><BR><a href='http://www.hit-counts.com'>Visitor Counter</a></div>
+		  <p>&copy2014 Matthew T. Ralston</p>
+		</div>
 	</body>
 </html>
