@@ -6,6 +6,11 @@
 
 # The same for histograms (plots ____)
 
+# copyright
+sed -i '' 's|<g id="ideograms">|<!-- Copyright 2014 Matthew Ralston-->\
+&|' circos.svg
+#sed '/./,$!d' circos.svg
+
 #plots 0-10 heatmaps
 
 sed -i '' 's/<g id="plot[0-9]"/& class="heatmaps"/' circos.svg
