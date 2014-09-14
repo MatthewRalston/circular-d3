@@ -46,7 +46,7 @@
 
 #time-description {
   float: left;
-  width: 465px;
+  width: 500px;
 }
 
 
@@ -113,7 +113,7 @@
   top: 295px;
   left: 180px;
   width: 150px;
-  height: 280px;
+  height: 200px;
   padding-left: 5px;
   float: right;
   border: 1px solid #222;
@@ -160,7 +160,8 @@
 
 #stress-description {
   float: left;
-  width: 500px;
+  width: 600px;
+  margin-bottom: 5px;
 }
 
 #gene-description {

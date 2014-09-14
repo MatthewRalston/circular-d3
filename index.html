@@ -82,14 +82,14 @@
 	    <div id="orbiter" class="large-8 small-4 columns">
 	      <ul class="example-orbit" data-orbit>
 		<li class="orbiter">
-		  <div id="density-description" class="description"><p><br/>The purple track around the chromosome shows gene density.</p></div>
+		  <div id="density-description" class="description"><p><br/>The first track around the chromosome shows protein density. Black lines on the purple track indicate protein-coding sequence boundaries; dense regions indicate more encoded proteins.</p></div>
 		  <img id="hist-rug" src="http://www.ats.ucla.edu/stat/r/pages/introduction_fig/unnamed-chunk-8.png" alt="Track 1: Gene density"/>
 		  <br/><br/><br/><br/><br/><br/><br/><br/><br/>
 		  <div class="orbit-caption">Gene density</div>
 		</li>
 		<li class="orbiter">
 		  <div id="time-description" class="description">
-		    <p><br/>The second track is a group of heatmaps, showing differential expression over time, with respect to the first mid-exponential time-point. Log<sub>2</sub> fold changes are visualized as heatmaps with the scale to the right. Individual data points can be inspected by hovering over a tile of interest.</p>
+		    <p><br/>The second track is a group of heatmaps, showing differential expression over time with respect to the first mid-exponential time-point. Log<sub>2</sub> fold changes are visualized as heatmaps with the scale to the right. A positive log<sub>2</sub>fold change of 1 indicates a doubling of a gene's level, while a -1 indicates a halving. Individual data points can be inspected by hovering over a tile of interest.</p>
 		  </div>
 		  <div id="time-scale">
 		    <p style="font-size: 10pt; margin-bottom: 0px;">Log<sub>2</sub> fold change</p>
@@ -117,7 +117,7 @@
 		</li>
 		<li class="orbiter">
 		  <div id="coverage-description" class="description">
-		    <p><br/>The third group of tracks shows the Log<sub>10</sub> of coverage across the genome, color scale shown on the right.</p>
+		    <p><br/>The third group of tracks shows the Log<sub>10</sub> of coverage across the genome, color scale shown on the right. Regions of high coverage tend to produce accurate estimates of expression and transcript boundaries.</p>
 		  </div>
 		  <div id="coverage-scale">
 		    <p style="font-size: 10pt; margin-bottom: 0px; margin-left: 5px;">Coverage</p>
@@ -143,7 +143,7 @@
 
 <!-- Logit p-values -->
 		  <div id="stress-description" class="description">
-		    <p><br/>The fourth group of tracks shows differential expression of generally stress responsive genes. The data are visualized as logit transformed p-values. The outermost heatmaps (left scale) show genes that respond to butanol. The inntermost heatmaps (right scale) show genes that respond to butyrate. Individual points may be inspected by hovering over a tile of interest.</p>
+		    <p><br/>The fourth group of tracks shows differential expression of <em>generally</em> stress responsive genes (p < 0.05, LFC > 1). The data are visualized as logit transformed p-values to emphasive strong and weak differential expression at each time point. The outermost heatmaps (left scale) show genes that respond to butanol. The innermost heatmaps (right scale) show genes that respond to butyrate. Individual points may be inspected by hovering over a tile of interest.<br/><br/></p>
 		  </div>
 		  <div id="stress-scale">
 		    <p style="font-size: 10pt; margin-bottom: 0px;">Adjusted P-value</p>
@@ -180,7 +180,7 @@
 		      </svg>
 		    </div>
 		    <div id="stress-values">
-		      <textarea readonly="" style="height:210px; font-size: 8pt; line-height: 13px;">0.002
+		      <textarea readonly="" style="height:170px; font-size: 8pt; line-height: 13px;">0.002
 0.007
 0.018
 0.047
@@ -195,10 +195,11 @@
 		      </textarea>
 		    </div>
 		  </div>
+		  <div class="orbit-caption">Differential Expression: Stressed vs Control over time</div>
 
 <!-- 
 		  <div id="stress-description" class="description">
-		    <p><br/>The fourth group of tracks shows differential expression of generally stress responsive genes. The outermost heatmaps (left scale) show genes that respond to butanol. The inntermost heatmaps (right scale) show genes that respond to butyrate. Individual points may be inspected by hovering over a tile of interest.</p>
+		  <p><br/>The fourth group of tracks shows differential expression of <em>generally</em> stress responsive genes. The outermost heatmaps (left scale) show genes that respond to butanol. The innermost heatmaps (right scale) show genes that respond to butyrate. Individual points may be inspected by hovering over a tile of interest.</p>
 		  </div>
 		  <div id="stress-scale">
 		    <p style="font-size: 10pt; margin-bottom: 0px;">Log<sub>2</sub> fold change</p>
@@ -232,20 +233,22 @@
 		    </div>
 		  </div>
 		  <br/><br/><br/><br/><br/><br/><br/><br/><br/>
+		  <div class="orbit-caption">Differential Expression: Stressed vs Control over time</div>
 
  -->
-		  <div class="orbit-caption">Differential Expression: Stressed vs Control over time</div>
+		  
+
 		</li>
 		<li class="orbiter">
 		  <div id="gene-description" class="description">
-		    <p><br/>The next track shows gene names produced from differential expression analysis. The gene names are stacked next to each other for space saving purposes.</p>
+		    <p><br/>The fifth track shows gene names produced from differential expression analysis. The gene names are stacked next to each other for space saving purposes.</p>
 		  </div>
 		  <br/><br/><br/><br/><br/>
 		  <div class="orbit-caption">Gene Labels</div>
 		</li>
 		<li class="orbiter">
 		  <div id="cluster-description" class="description">
-		    <p><br/>The final track shows the relationships between genes based on co-expression clustering. In this graph I display results from K-means clustering. K-means was chosen for its simplicity and ability to generate a low number of singleton clusters.</p>
+		    <p><br/>The final track shows the relationships between genes based on co-expression clustering. In this graph I display results from K-means clustering. K-means was chosen for its simplicity and ability to generate few singleton clusters.</p>
 		  </div>
 		  <br/><br/><br/><br/>
 		  <div class="orbit-caption">Gene Expression Clustering</div>
@@ -321,7 +324,8 @@
 			function heatin(tile) {
 			var link = d3.selectAll(".links").select("path#"+tile.attr("id"));
 			var gene = d3.selectAll(".genelabels").select("text#"+tile.attr("id"));
-			//console.log(link[0]);
+			console.log(tile.attr('id'));
+			console.log(link[0]);
 			var cluster = (link.empty()) ? "NA" : link.attr("class");
 			var w = 500;
 			var h = 100;
@@ -340,7 +344,7 @@
 			  .style("top", (d3.event.pageY-10) + "px")
 			  .style("width","750px").style("height","300px")
 			  .select("#value")
-			  .html("labels: Gene ID = "+tile.attr("id")+"<br/>Comparison = "+tile.attr("cond")+"<br/>Log2 fold change = "+tile.attr("val")+"<br/>P-value = "+tile.attr("pval")+"<br/>Time = "+tile.attr("time")+"<br/>Cluster = "+cluster);
+			  .html("labels: Gene ID = "+tile.attr("id")+"<br/>Comparison = "+tile.attr("cond")+"<br/>Log2 fold change = "+tile.attr("foldchange")+"<br/>P-value = "+tile.attr("pval")+"<br/>Time = "+tile.attr("time")+"<br/>Cluster = "+cluster);
 			d3.select("#tooltip").classed("hidden", false);
 			// use .hidden class as in http://goo.gl/7Cx2ch
 			// to make all links except those of interest hidden
