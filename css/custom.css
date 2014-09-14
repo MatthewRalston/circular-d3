@@ -112,8 +112,8 @@
 #stress-scale {
   top: 295px;
   left: 180px;
-  width: 122px;
-  height: 180px;
+  width: 150px;
+  height: 280px;
   padding-left: 5px;
   float: right;
   border: 1px solid #222;
@@ -140,7 +140,7 @@
 }
 
 #stress-values {
-  width: 50px;
+  width: 80px;
   overflow: hidden;
   float: right;
 }
@@ -151,13 +151,16 @@
   border: none;
   resize: none;
   height: 100%;
-  width: 50px;
-  font: 13px 'Comic Sans', sans-serif;
+  width: 80px;
+  font: 5px 'Comic Sans', sans-serif;
+  font-size: 7px;
+  padding: 0px;
+  padding-top: 7px
 }
 
 #stress-description {
   float: left;
-  width: 420px;
+  width: 500px;
 }
 
 #gene-description {
