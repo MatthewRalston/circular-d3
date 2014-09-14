@@ -6,8 +6,9 @@
 
 # The same for histograms (plots ____)
 
+# S V G   Related
 # copyright
-sed -i '' 's|<g id="ideograms">|<!-- Copyright 2014 Matthew Ralston-->\
+sed -i '' 's|<g id="ideograms">|<!-- Copyright 2014 Matthew Ralston, all rights reserved.-->\
 &|' circos.svg
 #sed '/./,$!d' circos.svg
 
@@ -22,3 +23,20 @@ sed -i '' 's/<g id="track_0"/& class="links"/' circos.svg
 
 # plots 12 -- histograms
 sed -i '' 's/<g id="plot1[2-9]"/& class="histograms"/' circos.svg
+
+# P N G  Related
+img=img/circos.png
+convert $img -set Author "Matthew T. Ralston" $img
+convert $img -set City "Hockessin" $img
+convert $img -set Country "USA" $img
+convert $img -set Email "mrals@udel.edu,mrals89@gmail.com" $img
+convert $img -set State "DE" $img
+convert $img -set Website "http://matthewralston.github.io" $img
+convert $img -set Copyright "copr 2014 Matthew T. Ralston, all rights reserved" $img
+convert $img -set Title "Circular plot of RNA-sequencing data from C. acetobutylicum" $img
+convert $img -set Keywords "Sequencing,genomics,circos,bioinformatics,Univ. of Delaware,RNA,data" $img
+
+
+
+# Make changes permanent
+git add circos.svg $img
